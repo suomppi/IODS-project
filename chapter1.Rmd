@@ -1,7 +1,15 @@
 
 # About the project
+I'm eager to start this course. This course was recommended to me by my thesis supervisor. I hope this helps me with **my thesis** and gives me tools for **doing research on my own.**
 
-*Write a short description about the course and add a link to your GitHub repository here. This is an R Markdown (.Rmd) file so you should use R Markdown syntax.*
+I'm also interested in coding generally. It's fascinating how much different things you can do eg: create **websites**, **apps**, **plots** and **analyze data**.
+
+
+I have some experience with RStudio, but I'm pretty much still a *novice*.
+
+
+https://suomppi.github.io/IODS-project/
+
 
 ```{r}
 # This is a so-called "R chunk" where you can write R code.
@@ -9,5 +17,8 @@
 date()
 
 ```
-The text continues here.
+
+
+
+
 
