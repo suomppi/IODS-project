@@ -1,13 +1,12 @@
-# Insert chapter 2 title here
+# Regression and model validation
 
-*Describe the work you have done this week and summarize your learning.*
+I got through the data wrangling part, but I underestimated the time the analysis part took, and I couldn't get it finished in time. I will do the last parts in the weekend :D 
+It was nice to get into action this week. The datacamp exercises were really helpful with this one. I used only the methods datacamp used so there shouldn't be anything too crazy going on in my file :)
 
-- Describe your work and results clearly. 
-- Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
-- Assume the reader has no previous knowledge of your data or the more advanced methods you are using.
+
+
 
 ```{r}
-date()
+
 ```
 
-Here we go again...
