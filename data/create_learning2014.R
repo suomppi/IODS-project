@@ -99,9 +99,22 @@ summary(learning2014)
 mun_malli <- lm(learning2014$points ~ learning2014$age + learning2014$deep + learning2014$stra, data = learning2014)
 summary(mun_malli)
 
-#drawing a diasnostic plot
-#drawing a QQ plot
-plot(mun_malli)
+#I can see that strategy has quite  p-value, 
+#therefore it seems that good strategy and points are linked
+#deep learining has a high p-value so it does not have 
+#a significate relationship with the target value
+
+#new model with age and strategy
+mun_malli2 <- lm(learning2014$points ~ learning2014$age + learning2014$stra, data = learning2014)
+summary(mun_malli)
+summary(mun_malli2)
+
+#age has p-value of 0.1599 and strategy 0.0438, so I guess they have some kind of
+#a relationship points
+
+plot(mun_malli2)
+
+
 
 
 

@@ -1,0 +1,8 @@
+---
+title: "chapter3.rmd"
+author: "Alex Suomalainen"
+date: "12 11 2020"
+output: html_document
+---
+
+
