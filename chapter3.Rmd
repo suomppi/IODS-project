@@ -5,4 +5,107 @@ date: "12 11 2020"
 output: html_document
 ---
 
+---
+title: "chapter3.rmd"
+author: "Alex Suomalainen"
+date: "12 11 2020"
+output: html_document
+---
+
+# Regression and model validation
+## Analyze
+
+reading the data into r
+```{r}
+alc <- read.csv('alc.csv', TRUE, ",")
+```
+
+cheking the names of the variables
+```{r}
+str(alc)
+```
+This data has 36 variables and I'm choosing age, go out, studytime and activities for the analyze.  
+age - student's age (numeric: from 15 to 22)  
+goout - going out with friends (numeric: from 1 - very low to 5 - very high)   
+studytime - weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)  
+traveltime - home to school travel time (numeric: 1 - <15 min., 2 - 15 to 30 min., 3 - 30 min. to 1 hour, or 4 - >1 hour)
+
+Hypothesis:  
+age ↑  alcohol consunption ↑  
+going out with friends ↑ alcohol consumption ↓  
+studytime ↑ alcohol consumption ↓  
+traveltime ↑ alcohol consumption ↑
+
+assessing libraries 
+```{r}
+library(tidyverse); library(tidyr); library(ggplot2); library(dplyr)
+```
+
+first I look at age and alcohol comsumption
+```{r}
+ggplot(alc, aes(x = high_use , y = age  )) +
+  geom_boxplot()
+```
+
+High usage of alcohol seems to rise as age rises.  
+
+Next lets take a look at go out time
+```{r}
+ggplot(alc, aes(x = high_use, y = goout  )) +
+  geom_boxplot()
+```
+
+Alcohol usage seems to increase as go out time increases, which makes sense.  
+
+Next up, studytime vs. alcohol consumption
+```{r}
+ggplot(alc, aes(x = high_use, y = studytime  )) +
+  geom_boxplot()
+```
+
+With more study time there is less high alcocol usage. 
+
+Last up, traveltime. This should be interesting
+```{r}
+ggplot(alc, aes(x = high_use, y = traveltime  )) +
+  geom_boxplot()
+```
+
+There seems to be no correlation with traveltime and high alcohol usage
+
+## Logistic regression
+
+find the model with glm()  
+```{r}
+m <- glm( high_use ~ alc$age + alc$goout + alc$studytime + alc$traveltime, data = alc, family = "binomial" )
+```
+
+summarising
+```{r}
+summary(m)
+```
+
+All variables except age have a relatively low p-value suggesting that there is a relationship betweed them and high alcohol comsumption  
+
+Lets compute the odds ratios  
+```{r}
+OR <- coef(m) %>% exp
+```
+and confidence intervals 
+```{r}
+CI <- confint(m) %>% exp
+```
+
+Then lets print out the odds ratios with the intervals
+```{r}
+cbind(OR, CI)
+```
+
+It seems that most likely when go out time increases, high alcohol consumption increases.  
+It also seems like the more you study the less likely it is that you comsume a lot of alcohol. 
+These were the correct hypotheses.
+
+I don't see a strong correlation with age and high alcohol usage, since the OR is only 1.12.
+
+Thats all I'm able to do. This math stuff is all new to me so this could be totally wrong. 
 
