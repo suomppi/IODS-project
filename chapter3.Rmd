@@ -5,14 +5,8 @@ date: "12 11 2020"
 output: html_document
 ---
 
----
-title: "chapter3.rmd"
-author: "Alex Suomalainen"
-date: "12 11 2020"
-output: html_document
----
 
-# Regression and model validation
+# Chapter 3 
 ## Analyze
 
 reading the data into r
