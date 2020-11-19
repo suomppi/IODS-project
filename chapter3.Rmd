@@ -99,7 +99,8 @@ It seems that most likely when go out time increases, high alcohol consumption i
 It also seems like the more you study the less likely it is that you comsume a lot of alcohol. 
 These were the correct hypotheses.
 
-I don't see a strong correlation with age and high alcohol usage, since the OR is only 1.12.
+I don't see a strong correlation with age and high alcohol usage, since the OR is  1.12.
 
 Thats all I'm able to do. This math stuff is all new to me so this could be totally wrong. 
+
 

@@ -1,0 +1,143 @@
+---
+title: "chapter4.Rmd"
+author: "Alex Suomalainen"
+date: "19 11 2020"
+output: html_document
+---
+
+## Analysis chr4
+
+Assessing libraries
+```{r}
+library(MASS)
+library(tidyr)
+library(readr)
+library(ggplot2)
+```
+
+Loading Boston data
+```{r}
+data("Boston")
+```
+
+Exploring dataset
+```{r}
+str(Boston)
+summary(Boston)
+```
+The dataset has 506 observations/rows and 14 variables/columns.  
+
+
+This data frame contains the following columns:  
+**crim** = per capita crime rate by town.  
+**zn** = proportion of residential land zoned for lots over 25,000 sq.ft.  
+**indus** = proportion of non-retail business acres per town.  
+**chas** = Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).  
+**nox** = nitrogen oxides concentration (parts per 10 million). rm = average number of rooms per dwelling.  
+**age** = proportion of owner-occupied units built prior to 1940.  
+**dis** = weighted mean of distances to five Boston employment centres.  
+**rad** = index of accessibility to radial highways.  
+**tax** = full-value property-tax rate per \$10,000.  
+**ptratio** = pupil-teacher ratio by town.  
+**black** = 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town.  
+**lstat** = lower status of the population (percent).    
+**medv** = median value of owner-occupied homes in \$1000s.
+
+Most of the variables are numerical variables, with a couple of integrer variables.  
+
+Graphical overview of the data
+```{r}
+pairs(Boston)
+```
+
+
+Scaling the dataset.  
+```{r}
+boston_scaled <- scale(Boston)
+summary(boston_scaled)
+```
+The variables changes so that all the means are 0.  
+
+Finding the class
+```{r}
+class(boston_scaled)
+```
+The class of boston scaled is matrix  
+
+Creating a data frame  
+```{r}
+boston_scaled <- as.data.frame(boston_scaled)
+class(boston_scaled)
+```
+Now it's a data frame. 
+
+Creating quantile vector of crime rate  
+```{r}
+bins <- quantile(boston_scaled$crim)
+bins
+```
+
+Creating a categorial variable 'crime'
+```{r}
+crime <- cut(boston_scaled$crim, breaks = bins, include.lowest = TRUE, label = c( "low", "med_low", "med_high", "high"))
+table(crime)
+```
+The categories are evenly distributed. 
+
+Removing the original variable  
+and adding the new variable
+```{r}
+boston_scaled <- dplyr::select(boston_scaled, -crim)
+boston_scaled <- data.frame(boston_scaled, crime)
+
+```
+
+Dividing the data to train and test sets with 80% of the data in the train set
+```{r}
+n <- nrow(boston_scaled)
+ind <- sample(n,  size = n * 0.8)
+train <- boston_scaled[ind,]
+test <- boston_scaled[-ind,]
+```
+
+Taking the crime classes from the test and saving them as correct_classes  
+Executing the code to remove crime from test set
+```{r}
+correct_classes <- test$crime
+test <- dplyr::select(test, -crime)
+```
+
+Fitting the linear discriminant analysis on the train.  Target variable is crime rate and all other variables are predictor variables
+```{r}
+lda.fit <- lda(crime ~ ., data = train)
+lda.fit
+```
+
+Adding biplot arrows, changing the classes to numeric and drawing the plot.    
+```{r}
+lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "orange", tex = 0.75, choices = c(1,2)){
+  heads <- coef(x)
+  arrows(x0 = 0, y0 = 0, 
+         x1 = myscale * heads[,choices[1]], 
+         y1 = myscale * heads[,choices[2]], col=color, length = arrow_heads)
+  text(myscale * heads[,choices], labels = row.names(heads), 
+       cex = tex, col=color, pos=3)
+}
+classes <- as.numeric(train$crime)
+plot(lda.fit, dimen = 2, col = classes, pch = classes)
+lda.arrows(lda.fit, myscale = 1)
+  
+```
+
+Predicting the classes with the test data
+```{r}
+lda.pred <- predict(lda.fit, newdata = test)
+table(correct = correct_classes, predicted = lda.pred$class)
+```
+
+The extremes were predicted pretty correctly  
+There is some difference in the medium classes.  
+
+
+
+
