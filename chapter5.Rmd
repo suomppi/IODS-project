@@ -1,0 +1,77 @@
+---
+title: "Chapter5.Rmd"
+author: "Alex Suomalainen"
+date: "26 11 2020"
+output: html_document
+---
+# Chapter 5 Analysis
+
+Loading the data
+```{r}
+human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep  =",", header = T)
+```
+
+
+
+Assessing libraries.
+```{r}
+library(GGally)
+library(tidyverse)
+library(dplyr)
+```
+
+Overview of the data.
+```{r}
+summary(human)
+str(human)
+ggpairs(human)
+```
+
+The data has 155 obsevations of 8 variables.  
+There are integrer and numerical variables.  
+
+Performing PCA with the non scaled data  
+drawing a biplot of the principal component representation and the original variables
+```{r}
+pca_human <- prcomp(human)
+biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+```
+
+Creating a summary of pca_human
+```{r}
+s <- summary(pca_human)
+s
+```
+
+This makes no sense whatsoever. 
+
+Standardising variables and doing the same operations.
+```{r}
+human_std <- scale(human)
+pca_human <- prcomp(human_std)
+biplot(pca_human, choices = 1:2, cex = c(0.5, 0.3), col = c("grey40", "deeppink2"))
+s <- summary(pca_human)
+s
+```
+
+Labo.FM and Parli.F variables are correlated, which means that when there is more females with at least secondary education,  
+there are more female representatives in the parlament.
+
+Mat.Mor and Ado.Birth variables are correlated, which means that when there is a higher maternal mortality ratio,  
+there are more adolescents giving birth. 
+
+Edu.Exp, Edu2.M, GNI and Life.Exp are correlated. So life expectancy at birth, Gross National Income per capita,  
+proportion of males with at least secondary education and Expected years of schooling are correlated.
+
+PC1 and PC2 contribute to (0.5361 + 0.1624) * 100% = 69,24% of the total variance.
+
+
+
+
+
+
+
+
+
+
+
